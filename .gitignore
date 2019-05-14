@@ -89,7 +89,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+# Put the directory name of your virtualenv 
+python-core/
 # Spyder project settings
 .spyderproject
 .spyproject
