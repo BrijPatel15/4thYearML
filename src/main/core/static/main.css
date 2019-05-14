@@ -1,0 +1,12 @@
+.main{
+    margin: auto;
+    width: 50%;
+    border: 3px solid rgb(0, 87, 248);
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;    
+}
+.links{
+    margin:0;
+    text-align: center;
+}
