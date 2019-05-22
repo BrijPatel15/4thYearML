@@ -1,12 +1,15 @@
 .main{
     margin: auto;
     width: 50%;
-    border: 3px solid rgb(0, 87, 248);
+    height: 50vh;
+    border: 3px solid black;
     padding: 10px;
     text-align: center;
-    vertical-align: middle;    
+    vertical-align: middle;
+    position: relative;
 }
 .links{
-    margin:0;
+    position: absolute;
     text-align: center;
+    bottom: 0;
 }
