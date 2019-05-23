@@ -6,7 +6,7 @@ from flask import render_template, url_for, request, redirect
 def create_app(test_config=None):
 	app = Flask(__name__, instance_relative_config=True)
 	
-	_config = { 'filename':'', 'isPlaying': False , 'file_error':False};
+	_config = { 'filename':'', 'isPlaying': False , 'file_error':False, 'modes':['AutoPlay Mode','Play Along Mode', 'GenrePlay']};
 	@app.route("/")
 	def defaultRoute():
 		config=_config;
@@ -36,4 +36,5 @@ def create_app(test_config=None):
 	def pause():
 		_config['isPlaying'] = False;
 		return redirect(url_for('defaultRoute'))
+	
 	return app
