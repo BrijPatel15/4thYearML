@@ -1,4 +1,0 @@
-set completion-ignore-case on
-set show-all-if-ambigous on
-TAB: menu-complete
-
