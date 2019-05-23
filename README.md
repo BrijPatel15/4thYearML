@@ -36,3 +36,18 @@ $ pip install -r requirements.txt
 $ pip install ${your-packacge}
 $ pip freeze > requirements.txt
 ```
+
+### Start a Juptyer Notebook
+*Assuming pip libraries are installed*
+```bash
+$ juptyer notebook
+```
+    The browser will open. And you will see the working directory.
+    Click New -> Python3 
+    Enjoy :)
+
+### Run the Flask App in Dev mode
+```bash
+$ export FLASK_APP=src/main/flaskr
+$ export FLASK_ENV=development
+```
