@@ -1,0 +1,19 @@
+.main{
+    margin: auto;
+    width: 50%;
+    height: 50vh;
+    border: 3px solid black;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+}
+.links{
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+}
+.errors{
+    border: 2px solid red;
+    color: red;
+}

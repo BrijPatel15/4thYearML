@@ -103,3 +103,4 @@ python-core/
 
 # mypy
 .mypy_cache/
+inputrc
