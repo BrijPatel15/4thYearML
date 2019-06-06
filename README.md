@@ -48,6 +48,16 @@ $ juptyer notebook
 
 ### Run the Flask App in Dev mode
 ```bash
-$ export FLASK_APP=src/main/flaskr
-$ export FLASK_ENV=development
+$ cd {working_dir}/src
+$ python3 run.py dev
+```
+### Run the Flask App in Prod mode
+```bash
+$ cd {working_dir}/src
+$ python3 run.py
+```
+##OR!!!
+```bash
+$ cd {working_dir}/src
+$ python3 run.py prod
 ```
