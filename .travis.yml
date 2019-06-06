@@ -6,4 +6,4 @@ python:
 install:
  - pip install -r requirements.txt
 #run all tests
-script: python3 src/run_test.py
+script: cd src/ && python3 run_test.py
