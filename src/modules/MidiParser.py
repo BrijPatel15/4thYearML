@@ -1,6 +1,9 @@
 import os
 import sys
+import logging
 from music21 import *
+
+logger = logging.getLogger('flask.app')
 
 def parse_midi_events(path):
     midiFile = converter.parse(path)

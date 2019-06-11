@@ -24,4 +24,32 @@
         <button type="submit" formaction="/pause" >Pause</button>
         {% endif %}
       </form>
+      <div class="logs">
+        <textarea rows="25" cols="50" id="output" readonly></textarea>
+        <ul class="sysinfo">System Utilization
+            <li class="sysinfo" id="cpu"> </li>
+            <li class="sysinfo" id="free_mem"> </li>
+            <li class="sysinfo" id="memory_avail"> </li>
+            <li class="sysinfo" id="memory_per"> </li>
+
+        </ul>
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <script>
+            
+            setInterval(function(){ // get the logs to view
+                $("#output").scrollTop($("#output")[0].scrollHeight);
+                $("#output").load("/stream")
+                $("#output").scrollTop($("#output")[0].scrollHeight);
+
+                $.getJSON("{{url_for('system')}}", function(data) {
+                   var utils=[];
+                   $.each(data, function(key,val){
+                    $("#"+key).text(key+": "+val);
+                   }) 
+                   
+                })
+                
+            },2000)
+        </script>
+      </div>
 </div>
