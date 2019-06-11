@@ -1,14 +1,14 @@
 import os
 import sys
 from music21 import *
-
+import logging
+logger = logging.getLogger('flask.app')
 
 def parse_midi_events(path):
   midiFile = converter.parse(path)
-  all_instruments = []
+  all_instruments = {}
   for part in midiFile.parts:
     instrument = []
-    print(part.partName)
     for event in part:
       for y in event.contextSites():
         if y[0] is part:
@@ -17,7 +17,8 @@ def parse_midi_events(path):
         instrument.append(dict(name=event.nameWithOctave, beat=event.quarterLength, timeOffset=offset))
       if getattr(event, 'isRest', None) and event.isRest:
         instrument.append(dict(name="Rest", beat=event.quarterLength, timeOffset=offset))
-    all_instruments.append(instrument)
+    all_instruments[part.partName]=instrument
+
   return all_instruments
 
 def validate_midi(fileName):
