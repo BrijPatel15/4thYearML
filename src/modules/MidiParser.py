@@ -2,23 +2,26 @@ import os
 import sys
 from music21 import *
 
-
 def parse_midi_events(path):
-  midiFile = converter.parse(path)
-  all_instruments = []
-  for part in midiFile.parts:
-    instrument = []
-    print(part.partName)
-    for event in part:
-      for y in event.contextSites():
-        if y[0] is part:
-          offset = y[1]
-      if getattr(event, 'isNote', None) and event.isNote:
-        instrument.append(dict(name=event.nameWithOctave, beat=event.quarterLength, timeOffset=offset))
-      if getattr(event, 'isRest', None) and event.isRest:
-        instrument.append(dict(name="Rest", beat=event.quarterLength, timeOffset=offset))
-    all_instruments.append(instrument)
-  return all_instruments
+    midiFile = converter.parse(path)
+    instr = instrument.Guitar
+    instrument_notes = []
+    for part in instrument.partitionByInstrument(midiFile):
+        if isinstance(part.getInstrument(), instr):
+            for events in part:
+                for event in events.contextSites():
+                    if event[0] is part:
+                        offset = event[1]
+                    if getattr(events, 'isRest', None) and events.isRest:
+                        instrument_notes.append(dict(name="Rest", beat=events.duration.type, quarterLength=events.duration.quarterLength, timeOffset=offset))
+                    if getattr(events, 'isNote', None) and events.isNote:
+                        instrument_notes.append(dict(name=events.nameWithOctave, beat=events.duration.type, quarterLength=events.duration.quarterLength, timeOffset=offset))
+                    if getattr(events, 'isChord', None) and events.isChord:
+                        chord = []
+                        for x in events._notes:
+                            chord.append(dict(name=x.nameWithOctave, beat=x.duration.type, quarterLength=x.duration.quarterLength, timeOffset=offset))
+                        instrument_notes.append(chord)
+    return instrument_notes
 
 def validate_midi(fileName):
     path = os.path.abspath(fileName)
@@ -37,5 +40,5 @@ def validate_midi(fileName):
 
     return isValid
 
-# print(parse_events("John_Denver_-_Take_Me_Home_Country_Roads.mid"))
+# print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
 # print(validateMidi('John_Denver_-_Take_Me_Home_Country_Roads.mid'))
