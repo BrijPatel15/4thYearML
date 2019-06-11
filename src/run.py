@@ -1,9 +1,15 @@
 
 import sys
-if (sys.argv[1]=="dev"):
-    FLASK_ENV="development"
-else:
+
+if (len(sys.argv)<2 ):
     FLASK_ENV="production"
+elif (sys.argv[1]=="dev"):
+    FLASK_ENV="development"
+elif (sys.argv[1]=="prod"):
+    FLASK_ENV="production"
+else:
+    raise Exception('Invalid parameter= {}'.format(sys.argv[1]))
+
 FLASK_APP="main/flaskr"
 
 APP_ENV = "FLASK_APP"
