@@ -13,24 +13,24 @@ class MidiParserTestCase(unittest.TestCase):
         BAD_MIDI_PATH_2 = "../music/bad-guitar.mid"
 
         expected = True
-        actual = midi.validate_midi(GOOD_MIDI_PATH_1)
+        actual = midi.validate_file(GOOD_MIDI_PATH_1)
         print(GOOD_MIDI_PATH_1)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
 
         expected = True
-        actual = midi.validate_midi(GOOD_MIDI_PATH_2)
+        actual = midi.validate_file(GOOD_MIDI_PATH_2)
         print(GOOD_MIDI_PATH_2)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = midi.validate_midi(BAD_MIDI_PATH_1)
+        actual = midi.validate_file(BAD_MIDI_PATH_1)
         print(BAD_MIDI_PATH_1)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = midi.validate_midi(BAD_MIDI_PATH_2)
+        actual = midi.validate_file(BAD_MIDI_PATH_2)
         print(BAD_MIDI_PATH_2)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)

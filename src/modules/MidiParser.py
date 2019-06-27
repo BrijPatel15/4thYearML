@@ -1,32 +1,38 @@
 import os
 import sys
 import logging
-from music21 import *
+from music21 import converter, instrument, tempo
+import pandas as pd
 
 logger = logging.getLogger('flask.app')
-
-def parse_midi_events(path):
+# Need a standard in terms of representing the events as a structure.
+# It will be a list of dict. List of events (events being, a note, rest, or a chord)
+# So parse_midi_events will return the following
+# [ {...}, {...}], where {...}, can be any note, rest, or chord event (so it can be put in a Pandas dataframe)
+# see python notebook for more detials, or if you wanna play around with this
+def parse_notes(path):
+    id=0 #unique id for the py dict 
     midiFile = converter.parse(path)
     instr = instrument.Guitar
     instrument_notes = []
+    bpm = get_tempo(path)
+    startTime=0
     for part in instrument.partitionByInstrument(midiFile):
         if isinstance(part.getInstrument(), instr):
-            for events in part:
-                for event in events.contextSites():
-                    if event[0] is part:
-                        offset = event[1]
-                    if getattr(events, 'isRest', None) and events.isRest:
-                        instrument_notes.append(dict(name="Rest", beat=events.duration.type, quarterLength=events.duration.quarterLength, timeOffset=offset))
-                    if getattr(events, 'isNote', None) and events.isNote:
-                        instrument_notes.append(dict(name=events.nameWithOctave, beat=events.duration.type, quarterLength=events.duration.quarterLength, timeOffset=offset))
-                    if getattr(events, 'isChord', None) and events.isChord:
-                        chord = []
-                        for x in events._notes:
-                            chord.append(dict(name=x.nameWithOctave, beat=x.duration.type, quarterLength=x.duration.quarterLength, timeOffset=offset))
-                        instrument_notes.append(chord)
-    return instrument_notes
+            for events in part.notes:
+                if getattr(events,'isNote', None) and events.isNote:
+                    instrument_notes.append(dict(id=id,event="Note",name=events.nameWithOctave, quarterLength=events.duration.quarterLength, timeOffset=startTime,part=part.partName))
+                    startTime+=get_duration_seconds(bpm,events.duration.quarterLength ) # offset the time based on note duration
+                if getattr(events,'isChord', None) and events.isChord: # if its a chord get the group of notes 
+                    chord_notes = [] 
+                    for c in events._notes:
+                        chord_notes.append(c.nameWithOctave)
+                    instrument_notes.append(dict(id=id,event="Chord", name=chord_notes, quarterLength=events._notes[0].duration.quarterLength, timeOffset=startTime,part=part.partName))
+                    startTime+=get_duration_seconds(bpm,events.duration.quarterLength )
+                id+=1
+    return pd.DataFrame(instrument_notes)
 
-def validate_midi(fileName):
+def validate_file(fileName):
     path = os.path.abspath(fileName)
     isValid = True
     try:
@@ -42,6 +48,21 @@ def validate_midi(fileName):
         isValid = False
 
     return isValid
+
+def get_tempo(path):
+    midiFile = converter.parse(path)
+    instr = instrument.Guitar
+    bpm= tempo.MetronomeMark
+    for part in instrument.partitionByInstrument(midiFile):
+        if isinstance(part.getInstrument(), instr):
+            for events in part:
+                if isinstance(events, bpm):
+                    return events.getQuarterBPM()
+
+def get_duration_seconds(bpm, quarterLength):
+    #convert bpm -> hz
+    freq = 1/(bpm/60)
+    return ((freq)*(quarterLength/4))/(1/4) #1 beat is a quarter note.
 
 # print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
 # print(validateMidi('John_Denver_-_Take_Me_Home_Country_Roads.mid'))
