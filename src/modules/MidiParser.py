@@ -47,8 +47,7 @@ def validate_file(fileName):
             for part in midiFile._elements:
                 if (isinstance(part.getInstrument(), acoustGuitar) or isinstance(part.getInstrument(), elecGuitar)
                     or isinstance(part.getInstrument(), guitar)):
-                    if(isValid): #If we find any one of the instruments we can just return if the past check is okay
-                        return True #We have all of our fields and we have an instrument that we want 
+                    return True #We have all of our fields and we have an instrument that we want 
             return False # We have our fields but we don't have the instrument we want 
     except:
        return False #Error parsing
@@ -71,4 +70,4 @@ def get_duration_seconds(bpm, quarterLength):
     return ((freq)*(quarterLength/4))/(1/4) #1 beat is a quarter note.
 
 # print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
-#print(validate_file('../music/i_see_fire.mid'))
+# print(validate_file('../music/bad-John_Denver_-_Take_Me_Home_Country_Roads.mid'))
