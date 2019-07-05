@@ -36,13 +36,11 @@ def validate_file(fileName):
     path = os.path.abspath(fileName)
     isValid = True
     try:
-        c = converter.Converter()
-        c.parseFile(path)
-        stream = c.stream
-        if (stream.duration is None or stream.elements is None or
-            stream.flat is None or stream.notes is None or
-            stream.notesAndRests is None or stream.parts is None or
-            stream.pitches is None or stream.secondsMap is None):
+        midiFile = converter.parse(path)
+        if (midiFile.duration is None or midiFile.elements is None or
+            midiFile.flat is None or midiFile.notes is None or
+            midiFile.notesAndRests is None or midiFile.parts is None or
+            midiFile.pitches is None or midiFile.secondsMap is None or midiFile._elements is None):
             isValid = False
     except:
         isValid = False
@@ -65,4 +63,4 @@ def get_duration_seconds(bpm, quarterLength):
     return ((freq)*(quarterLength/4))/(1/4) #1 beat is a quarter note.
 
 # print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
-# print(validateMidi('John_Denver_-_Take_Me_Home_Country_Roads.mid'))
+# print(validate_file('../music/bad-guitar.mid'))
