@@ -34,18 +34,26 @@ def parse_notes(path):
 
 def validate_file(fileName):
     path = os.path.abspath(fileName)
-    isValid = True
+    print(path)
+    acoustGuitar = instrument.AcousticGuitar
+    elecGuitar = instrument.ElectricGuitar
+    guitar = instrument.Guitar
     try:
         midiFile = converter.parse(path)
-        if (midiFile.duration is None or midiFile.elements is None or
-            midiFile.flat is None or midiFile.notes is None or
-            midiFile.notesAndRests is None or midiFile.parts is None or
-            midiFile.pitches is None or midiFile.secondsMap is None or midiFile._elements is None):
-            isValid = False
+        if (midiFile.duration is not None and midiFile.elements is not None and
+            midiFile.flat is not None and midiFile.notes is not None and
+            midiFile.notesAndRests is not None and midiFile.parts is not None and
+            midiFile.pitches is not None and midiFile.secondsMap is not None and midiFile._elements is not None):
+            for part in midiFile._elements:
+                if (isinstance(part.getInstrument(), acoustGuitar) or isinstance(part.getInstrument(), elecGuitar)
+                    or isinstance(part.getInstrument(), guitar)):
+                    if(isValid): #If we find any one of the instruments we can just return if the past check is okay
+                        return True #We have all of our fields and we have an instrument that we want 
+            return False # We have our fields but we don't have the instrument we want 
     except:
-        isValid = False
+       return False #Error parsing
 
-    return isValid
+    return False #We don't have the fields we want 
 
 def get_tempo(path):
     midiFile = converter.parse(path)
@@ -63,4 +71,4 @@ def get_duration_seconds(bpm, quarterLength):
     return ((freq)*(quarterLength/4))/(1/4) #1 beat is a quarter note.
 
 # print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
-# print(validate_file('../music/bad-guitar.mid'))
+#print(validate_file('../music/i_see_fire.mid'))
