@@ -23,7 +23,6 @@ def dataFrameToByteConverter(events):
         
 def getByteFromNote(note):
     noteVals = {
-
     }
     return noteVals.get(note)
 

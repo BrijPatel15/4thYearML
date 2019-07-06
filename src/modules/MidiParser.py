@@ -53,6 +53,7 @@ def validate_file(fileName):
     except:
        return False #Error parsing
 
+       
     return False #We don't have the fields we want 
 
 def get_tempo(path):
