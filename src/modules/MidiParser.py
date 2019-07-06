@@ -10,8 +10,9 @@ logger = logging.getLogger('flask.app')
 # So parse_midi_events will return the following
 # [ {...}, {...}], where {...}, can be any note, rest, or chord event (so it can be put in a Pandas dataframe)
 # see python notebook for more detials, or if you wanna play around with this
-def parse_notes(path):
+def parse_notes(fileName):
     id=0 #unique id for the py dict 
+    path = os.path.abspath(fileName)
     midiFile = converter.parse(path)
     instr = instrument.Guitar
     instrument_notes = []
