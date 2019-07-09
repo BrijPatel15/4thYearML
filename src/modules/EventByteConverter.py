@@ -4,18 +4,18 @@ def dataFrameToByteConverter(event):
     acceptedValues = ["event", "name"]
     for val in acceptedValues:
         assert(val in str(events.columns.values))
-    for x in range(1, totalRows):
-        colVal = events.ix[x, "event"]
-        noteVal = events.ix[x, "name"]
-        if colVal is 'Note':
-            finalByteArray.append(int.from_bytes(b'\x08', "big"))
-            finalByteArray.append(bytes(getByteFromNote(noteVal))[0])
-        if colVal is 'Chord':
-            finalByteArray.append(int.from_bytes(b'\x04', "big"))
-            for val in noteVal:
-                finalByteArray.append(bytes(getByteFromNote(val))[0])
+
+    colVal = events.ix[x, "event"]
+    noteVal = events.ix[x, "name"]
+    if colVal is 'Note':
+        finalByteArray.append(int.from_bytes(b'\x08', "big"))
+        finalByteArray.append(bytes(getByteFromNote(noteVal))[0])
+    if colVal is 'Chord':
+        finalByteArray.append(int.from_bytes(b'\x04', "big"))
+        for val in noteVal:
+            finalByteArray.append(bytes(getByteFromNote(val))[0])
     return finalByteArray
-        
+
 def getByteFromNote(note):
     noteVals = {
         "E1" : b'\x01',
@@ -99,6 +99,6 @@ def getByteFromNote(note):
     }
     return noteVals.get(note)
 
-events = MidiParser.parse_notes('/music/John_Denver_-_Take_Me_Home_Country_Roads.mid')
-for event in events:
-    dataFrameToByteConverter(event)
+# events = MidiParser.parse_notes('/music/John_Denver_-_Take_Me_Home_Country_Roads.mid')
+# for event in events:
+#     dataFrameToByteConverter(event)
