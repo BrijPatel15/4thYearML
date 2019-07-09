@@ -8,7 +8,7 @@ class MidiParserTestCase(unittest.TestCase):
     def test_validate(self):
 
         GOOD_MIDI_PATH_1 = "../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"
-        GOOD_MIDI_PATH_2 = "../music/guitar.mid"
+        GOOD_MIDI_PATH_2 = "../music/i_see_fire.mid"
         BAD_MIDI_PATH_1 = "../music/bad-John_Denver_-_Take_Me_Home_Country_Roads.mid"
         BAD_MIDI_PATH_2 = "../music/bad-guitar.mid"
 
