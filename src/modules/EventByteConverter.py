@@ -1,9 +1,6 @@
-import music21
-import MidiParser 
+import MidiParser
 
-def dataFrameToByteConverter(events):
-    totalRows = len(events.index)
-    finalByteArray = bytearray()
+def dataFrameToByteConverter(event):
     acceptedValues = ["event", "name"]
     for val in acceptedValues:
         assert(val in str(events.columns.values))
@@ -102,4 +99,6 @@ def getByteFromNote(note):
     }
     return noteVals.get(note)
 
-dataFrameToByteConverter(MidiParser.parse_notes('../music/John_Denver_-_Take_Me_Home_Country_Roads.mid'))
+events = MidiParser.parse_notes('/music/John_Denver_-_Take_Me_Home_Country_Roads.mid')
+for event in events:
+    dataFrameToByteConverter(event)
