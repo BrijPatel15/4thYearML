@@ -63,7 +63,7 @@ def getByteFromNote(note):
         "D4" : b'\x28',
         "D#4": b'\x29',
         "E5" : b'\x2A',
-        "F1" : b'\x2B',
+        "F-1" : b'\x2B',
         "F#4": b'\x2C',
         "G-2" : b'\x2D',
         "G#4": b'\x2E',
