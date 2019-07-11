@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 import MidiParser as midi
 import EventByteConverter as eventConverter
-from ByteConstTable import *
+from ByteConstTable import getByteFromNote, noteVals
 
 class MidiParserTestCase(unittest.TestCase):
 

@@ -5,4 +5,5 @@ def master_suite():
     suite = unittest.TestSuite()
     suite.addTest(MidiParserTestCase('test_validate'))
     suite.addTest(MidiParserTestCase('test_parse'))
+    suite.addTest(MidiParserTestCase('test_EventConverter'))
     return suite
