@@ -29,5 +29,5 @@ def validateValues(eventVal, noteVal):
 
 events = MidiParser.parse_notes('../music/i_see_fire.mid')
 
-for x in range(1, len(events.index)):
+for x in range(0, len(events.index)):
     dataFrameToByteConverter(events.iloc[x])
