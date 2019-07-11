@@ -46,14 +46,14 @@ class MidiParserTestCase(unittest.TestCase):
         badOverAll = pd.DataFrame(dict(event="fail", name="fail"))
 
         expected = True
-        actual = validateValues(goodEvent.loc["event"], goodEvent.loc["name"])
+        actual = eventConverter.validateValues(goodEvent.loc["event"], goodEvent.loc["name"])
         res = eventConverter.dataFrameToByteConverter(goodEvent)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         self.assertEqual(res[0], getByteFromNote("C1")[0])
 
         expected = True
-        actual = validateValues(goodChord.loc["event"], goodChord.loc["name"])
+        actual = eventConverter.validateValues(goodChord.loc["event"], goodChord.loc["name"])
         res = eventConverter.dataFrameToByteConverter(goodChord)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
@@ -61,17 +61,17 @@ class MidiParserTestCase(unittest.TestCase):
         self.assertEqual(res[1], getByteFromNote("B1")[0])
 
         expected = False
-        actual = validateValues(badEvent.loc["event"], badEvent.loc["name"])
+        actual = eventConverter.validateValues(badEvent.loc["event"], badEvent.loc["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = validateValues(badChord.loc["event"], badChord.loc["name"])
+        actual = eventConverter.validateValues(badChord.loc["event"], badChord.loc["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         
         expected = False
-        actual = validateValues(badOverAll.loc["event"], badOverAll.loc["name"])
+        actual = eventConverter.validateValues(badOverAll.loc["event"], badOverAll.loc["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
