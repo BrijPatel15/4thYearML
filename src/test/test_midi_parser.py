@@ -43,7 +43,7 @@ class MidiParserTestCase(unittest.TestCase):
         badEvent = pd.DataFrame(dict(event="Note", name="fail"))
         goodChord = pd.DataFrame(dict(event="Chord", name=["C1", "B1"]))
         badChord = pd.DataFrame(dict(event="Chord", name=[]))
-        badOverAll = pd.DataFrame(dict(event="fail" name="fail"))
+        badOverAll = pd.DataFrame(dict(event="fail", name="fail"))
 
         expected = True
         actual = validateValues(goodEvent.loc["event"], goodEvent.loc["name"])
