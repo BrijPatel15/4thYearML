@@ -27,7 +27,15 @@ def validateValues(eventVal, noteVal):
     return isValid
 
 
-events = MidiParser.parse_notes('../music/i_see_fire.mid')
+def motorToByte(motorNum, steps): #To enable test mode send 255 and to disable send 0; after 255 all the byte values will be taken as is
+    finalByteArray = bytearray()
+    assert(int(motorNum) > 0 and int(steps) > 0), "Must have motor number and steps"
+    finalByteArray.append(motorNum & 255)
+    finalByteArray.append(steps & 255)
+    return finalByteArray
 
-for x in range(0, len(events.index)):
-    dataFrameToByteConverter(events.iloc[x])
+
+# events = MidiParser.parse_notes('../music/i_see_fire.mid')
+
+# for x in range(0, len(events.index)):
+#     dataFrameToByteConverter(events.iloc[x])
