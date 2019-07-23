@@ -106,3 +106,5 @@ python-core/
 inputrc
 
 .vscode
+node_modules
+src/react/node_modules

@@ -1,55 +1,19 @@
-<!doctype html>
-<title>Guitarify</title>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" >
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}"/>
+    <title>Electronic Jam Assitant</title>
 </head>
-<div class="main">
-    <div class="header">
-        <h1>Welcome to Guitarify!</h1>
+<body>
+    <div>
+        <div id="index">
+                <!-- My React stuff is here -->
+        </div>
     </div>
-    <div class="links">
-        <a href="https://github.com/BrijPatel15/4thYearML">Github</a> 
-    </div>
-    <form action = "/upload" method = "POST" enctype = "multipart/form-data">
-        <div>{{ config['filename'] }}</div>
-         <input type = "file" name = "file" onchange="this.form.submit()"/>
-         {% if config['file_error'] %}
-            <div class="errors">{{ config['errors'] }}</div>
-         {% endif   %}
-      </form>
-      <form>
-        {% if not config['isPlaying'] %}
-        <button type="submit" formaction="/play" >Play</button>
-        {% else %}
-        <button type="submit" formaction="/pause" >Pause</button>
-        {% endif %}
-      </form>
-      <div class="logs">
-        <textarea rows="25" cols="50" id="output" readonly></textarea>
-        <ul class="sysinfo">System Utilization
-            <li class="sysinfo" id="cpu"> </li>
-            <li class="sysinfo" id="free_mem"> </li>
-            <li class="sysinfo" id="memory_avail"> </li>
-            <li class="sysinfo" id="memory_per"> </li>
-
-        </ul>
-        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-        <script>
-            
-            setInterval(function(){ // get the logs to view
-                $("#output").scrollTop($("#output")[0].scrollHeight);
-                $("#output").load("/stream")
-                $("#output").scrollTop($("#output")[0].scrollHeight);
-
-                $.getJSON("{{url_for('system')}}", function(data) {
-                   var utils=[];
-                   $.each(data, function(key,val){
-                    $("#"+key).text(key+": "+val);
-                   }) 
-                   
-                })
-                
-            },2000)
-        </script>
-      </div>
-</div>
+<script type="text/javascript" src="../static/main.js"></script></body>
+</html>
