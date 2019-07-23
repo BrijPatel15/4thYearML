@@ -5,18 +5,20 @@ _config = { 'filename':'', 'isPlaying': False , 'file_error':False, 'modes':['Au
 @mod_guitar.route('/upload', methods = ['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        # print(request.files)
         f = request.files['file']
         if (f.filename.split('.')[1]=='mid'):
-            f.save('music/guitar.mid')
+            f.save('../music/guitar.mid')
             _config['filename']=f.filename
             _config['errors']=False
             status = "Ok"
             msg = "Successfully uploaded"
+            f.close()
         else:
             _config['errors'] = True
             status= "Error"
             msg = "Error occured during upload"
-        return jsonify({'status': status, 'message':msg})
+        return jsonify({'status': status, 'message':msg, 'data': _config['filename']})
     elif request.method =='GET':
         return (_config['filename'])
 
@@ -26,12 +28,12 @@ def play():
     _config['isPlaying'] = True
     status = "200"
     msg = "Success"
-    data = "Pause"
+    data = _config['filename']
     return jsonify({'status': status, 'message':msg, 'data': data})
 
 @mod_guitar.route('/pause', methods = ['GET'])
 def pause():
     status = "200"
     msg = "Success"
-    data = "Play"
+    data = _config['filename']
     return jsonify({'status': status, 'message':msg, 'data': data})

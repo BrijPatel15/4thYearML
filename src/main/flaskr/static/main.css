@@ -47,3 +47,12 @@
        -moz-border-radius: 5rem;
             border-radius: 5rem;
 }
+.musicplayer{
+    width: 600px;
+}
+.player{
+    height: 30px;
+}
+.fileupload{
+    display: none;
+}
