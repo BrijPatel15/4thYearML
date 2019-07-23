@@ -10,8 +10,9 @@ logger = logging.getLogger('flask.app')
 # So parse_midi_events will return the following
 # [ {...}, {...}], where {...}, can be any note, rest, or chord event (so it can be put in a Pandas dataframe)
 # see python notebook for more detials, or if you wanna play around with this
-def parse_notes(path):
+def parse_notes(fileName):
     id=0 #unique id for the py dict 
+    path = os.path.abspath(fileName)
     midiFile = converter.parse(path)
     instr = instrument.Guitar
     instrument_notes = []
@@ -52,6 +53,7 @@ def validate_file(fileName):
     except:
        return False #Error parsing
 
+       
     return False #We don't have the fields we want 
 
 def get_tempo(path):
@@ -69,5 +71,5 @@ def get_duration_seconds(bpm, quarterLength):
     freq = 1/(bpm/60)
     return ((freq)*(quarterLength/4))/(1/4) #1 beat is a quarter note.
 
-# print(parse_midi_events("../../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
+#print(parse_notes("../music/John_Denver_-_Take_Me_Home_Country_Roads.mid"))
 # print(validate_file('../music/bad-John_Denver_-_Take_Me_Home_Country_Roads.mid'))
