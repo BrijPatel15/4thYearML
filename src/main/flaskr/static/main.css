@@ -23,3 +23,36 @@
 .logs{
     display: inline;
 }
+.content-wrapper{
+    padding-top: 5em;
+}
+.landing-text{
+    font-size: 96px;
+}
+.sub-text{
+    font-size: 23px;
+}
+.modes{
+    background: linear-gradient(113.24deg, #27DA4E 3.06%, #3FEDED 95.46%), #FFFFFF;
+    border-radius:20px;
+}
+.select{
+    width:200px;
+}
+.btn-xlg {
+    padding: 18px;
+    font-size: 24px; 
+    line-height: normal;
+    -webkit-border-radius: 5rem;
+       -moz-border-radius: 5rem;
+            border-radius: 5rem;
+}
+.musicplayer{
+    width: 600px;
+}
+.player{
+    height: 30px;
+}
+.fileupload{
+    display: none;
+}

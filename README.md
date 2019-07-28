@@ -46,6 +46,16 @@ $ juptyer notebook
     Click New -> Python3 
     Enjoy :)
 
+### Compile JSX Frontend to Vanilla in Development Mode
+*Assuming latest npm*
+```bash
+    npm run build-dev
+```
+### Compile JSX Frontend to Vanilla in Production Mode
+*Assuming latest npm*
+```bash
+    npm run build
+```
 ### Run the Flask App in Dev mode
 ```bash
 $ cd {working_dir}/src
