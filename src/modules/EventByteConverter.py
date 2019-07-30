@@ -3,8 +3,8 @@ from ByteConstTable import getByteFromNote, noteVals
 
 def dataFrameToByteConverter(event):
     finalByteArray = bytearray()
-    colVal = event.loc["event"]
-    noteVal = event.loc["name"]
+    colVal = event["event"]
+    noteVal = event["name"]
     assert(validateValues(colVal, noteVal)), "Event and Note values are not valid or are empty."
     if colVal is 'Note':
         finalByteArray.append(bytes(getByteFromNote(noteVal))[0] & 255)
