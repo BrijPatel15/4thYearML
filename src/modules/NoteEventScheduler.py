@@ -7,6 +7,9 @@ def send_event(note=None):
     # print("Notes", time.time(), note) #change this to actually send something when implemented
     spi = spidev.SpiDev()
     messageToSend = dataFrameToByteConverter(note)
+    spi.open(0,1)
+    spi.max_speed_hz = 500000
+    spi.mode=0
     resp = spi.xfer2([messageToSend])
     print(resp)
     
