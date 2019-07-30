@@ -40,7 +40,10 @@ class LandingText extends Component {
         fetch('http://127.0.0.1:5000/api/play', {method: 'get'})
         .then (res => res.json())
         .then ((data)=> {
-            this.setState({isPlaying: 'Pause'});
+            if (data.status =="200")
+                this.setState({isPlaying: 'Pause'});
+            else
+                console.log(data.message);
             // this.setState({currMode: data.data});
             // console.log(this.state.currMode);
         });
@@ -49,7 +52,10 @@ class LandingText extends Component {
         fetch('http://127.0.0.1:5000/api/pause', {method: 'get'})
             .then (res => res.json())
             .then ((data)=> {
-                this.setState({isPlaying: 'Play', nowPlaying:data.data});
+                if (data.status =="200")
+                    this.setState({isPlaying: 'Play', nowPlaying:data.data});
+                else
+                    console.log(data.message);
                 // this.setState({currMode: data.data});
                 // console.log(this.state.currMode);
             });
