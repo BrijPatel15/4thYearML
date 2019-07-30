@@ -39,7 +39,7 @@ def play():
         # cmd = "pwd"
         
         try:
-            globalProcess = subprocess.Popen(cmd, shell=False)
+            globalProcess = subprocess.Popen(cmd, shell=True)
             # subPID = globalProcess.pid
             # out, error = globalProcess.communicate()
             # print ("out:" + str(out))
@@ -58,5 +58,9 @@ def pause():
     status = "200"
     msg = "Success"
     data = _config['filename']
-    globalProcess.terminate()
+    if (globalProcess!=None):
+        globalProcess.terminate()
+    else:
+        status="500"
+        msg="Song is not playing."
     return jsonify({'status': status, 'message':msg, 'data': data})
