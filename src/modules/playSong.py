@@ -4,7 +4,7 @@ from NoteEventScheduler import schedule_events
 dir_path = os.path.dirname(os.path.realpath(__file__))
 # MUSIC_PATH = "../../music/guitar.mid"
 if (len(sys.argv)<2):
-    MUSIC_PATH = "../../music/guitar.mid"
+    MUSIC_PATH = "../music/guitar.mid"
     dir_path = dir_path+MUSIC_PATH
 else:
     MUSIC_PATH = sys.argv[1]
