@@ -3,7 +3,7 @@ import signal, subprocess, os
 mod_guitar = Blueprint('api_guitar', __name__)
 _config = { 'filename':None, 'isPlaying': False , 'file_error':False, 'modes':['AutoPlay Mode','Play Along Mode', 'GenrePlay'], 'logs':""}
 subPID = -1000
-globalProcess = None
+globalProcess = ''
 
 @mod_guitar.route('/upload', methods = ['GET', 'POST'])
 def upload_file():
