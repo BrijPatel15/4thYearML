@@ -39,54 +39,39 @@ class MidiParserTestCase(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_EventConverter(self):
-        test=[]
-        test2 = []
-        test3 = []
-        test4 = []
-        test5 = []
-        test.append(dict(id=0,event="Note", name="C1"))
-        test2.append(dict(id=1,event="Note", name=""))
-        test3.append(dict(id=2,event="Chord", name=["C1", "B1"]))
-        test4.append(dict(id=3,event="Chord", name=[]))
-        test5.append(dict(id=4,event="fail", name=""))
+        test=dict(id=0,event="Note", name="C1")
+        test2=dict(id=1,event="Note", name="")
+        test3=dict(id=2,event="Chord", name=["C1", "B1"])
+        test4=dict(id=3,event="Chord", name=[])
+        test5=dict(id=4,event="fail", name="")
 
         expected = True
-        df = pd.DataFrame(test)
-        goodEve = df.iloc[0]
-        actual = eventConverter.validateValues(goodEve.loc["event"], goodEve.loc["name"])
-        res = eventConverter.dataFrameToByteConverter(goodEve)
+        actual = eventConverter.validateValues(test['event'], test['name'])
+        res = eventConverter.dataFrameToByteConverter(test['name'], test['event'])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         self.assertEqual(res[0], getByteFromNote("C1")[0])
 
         expected = True
-        df2 = pd.DataFrame(test3)
-        goodEveChord = df2.iloc[0]
-        actual = eventConverter.validateValues(goodEveChord.loc["event"], goodEveChord.loc["name"])
-        res = eventConverter.dataFrameToByteConverter(goodEveChord)
+        actual = eventConverter.validateValues(test3["event"], test3["name"])
+        res = eventConverter.dataFrameToByteConverter(test3['name'], test3['event'])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         self.assertEqual(res[0], getByteFromNote("C1")[0])
         self.assertEqual(res[1], getByteFromNote("B1")[0])
 
         expected = False
-        df3 = pd.DataFrame(test2)
-        badEve = df3.iloc[0]
-        actual = eventConverter.validateValues(badEve.loc["event"], badEve.loc["name"])
+        actual = eventConverter.validateValues(test2["event"], test2["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
         expected = False
-        df4 = pd.DataFrame(test4)
-        badChord = df4.iloc[0]
-        actual = eventConverter.validateValues(badChord.loc["event"], badChord.loc["name"])
+        actual = eventConverter.validateValues(test4["event"], test4["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         
         expected = False
-        df5 = pd.DataFrame(test5)
-        badOverAll = df5.iloc[0]
-        actual = eventConverter.validateValues(badOverAll.loc["event"], badOverAll.loc["name"])
+        actual = eventConverter.validateValues(test5["event"], test5["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 

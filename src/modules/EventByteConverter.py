@@ -1,10 +1,9 @@
-import MidiParser
 from ByteConstTable import getByteFromNote, noteVals
 
-def dataFrameToByteConverter(event):
+def dataFrameToByteConverter(name, event):
     finalByteArray = bytearray()
-    colVal = event.loc["event"]
-    noteVal = event.loc["name"]
+    colVal = event
+    noteVal = name
     assert(validateValues(colVal, noteVal)), "Event and Note values are not valid or are empty."
     if colVal is 'Note':
         finalByteArray.append(bytes(getByteFromNote(noteVal))[0] & 255)
