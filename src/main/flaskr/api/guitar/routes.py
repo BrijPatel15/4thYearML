@@ -39,7 +39,7 @@ def play():
         # cmd = "pwd"
         
         try:
-            globalProcess = subprocess.Popen(cmd, shell=True)
+            globalProcess = subprocess.Popen(cmd, shell=False)
             print("Process ID: ",globalProcess.pid)
             # subPID = globalProcess.pid
             # out, error = globalProcess.communicate()
