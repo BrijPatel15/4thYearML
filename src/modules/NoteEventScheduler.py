@@ -15,7 +15,7 @@ def send_event(name=None, event=None):
             resp = spi.xfer2(messageToSend[0])
             print(resp)
         else:
-            for (messages in messageToSend):
+            for messages in messageToSend:
                 resp = spi.xfer2(messages)
                 print(resp)
     
