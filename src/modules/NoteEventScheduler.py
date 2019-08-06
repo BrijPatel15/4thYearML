@@ -13,11 +13,11 @@ def send_event(name=None, event=None):
         spi.mode=0
         print(messageToSend)
         if (len(messageToSend)==1):
-            resp = spi.xfer2(messageToSend[0])
+            resp = spi.xfer2([messageToSend[0]])
             print(resp)
         else:
             for messages in messageToSend:
-                resp = spi.xfer2(messages)
+                resp = spi.xfer2([messages])
                 print(resp)
     
 def schedule_events(df, s):
