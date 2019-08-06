@@ -3,11 +3,10 @@ import sched, time
 import spidev
 from EventByteConverter import dataFrameToByteConverter
 
-def send_event(row=None):
-    # print("Notes", time.time(), note) #change this to actually send something when implemented
+def send_event(name=None, event=None):
     spi = spidev.SpiDev()
-    print(row)
-    messageToSend = dataFrameToByteConverter(row)
+
+    messageToSend = dataFrameToByteConverter(name, event)
     spi.open(0,1)
     spi.max_speed_hz = 500000
     spi.mode=0
@@ -19,6 +18,7 @@ def schedule_events(df, s):
         raise Exception("No events provided.")
     s.enter(3,1,send_event, argument=('CLAP CLAP CLAP',))
     for index, row in df.head(n=len(df)).iterrows():
-        time =row['timeOffset']
-        note = row['name']
-        s.enter(3+time, 1, send_event, argument=(row,))
+        times =row['timeOffset']
+        name = row['name']
+        event = row['event']
+        s.enter(3+times, 1, send_event, argument=(name,event))
