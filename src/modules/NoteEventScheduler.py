@@ -5,13 +5,13 @@ from EventByteConverter import dataFrameToByteConverter
 
 def send_event(name=None, event=None):
     spi = spidev.SpiDev()
-
-    messageToSend = dataFrameToByteConverter(name, event)
-    spi.open(0,1)
-    spi.max_speed_hz = 500000
-    spi.mode=0
-    resp = spi.xfer2([messageToSend])
-    print(resp)
+    if (name !='CLAP CLAP CLAP'):
+        messageToSend = dataFrameToByteConverter(name, event)
+        spi.open(0,1)
+        spi.max_speed_hz = 500000
+        spi.mode=0
+        resp = spi.xfer2([messageToSend])
+        print(resp)
     
 def schedule_events(df, s):
     if df.empty:
