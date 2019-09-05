@@ -14,9 +14,9 @@ class DebugPage extends Component {
                 <div className="landing-text">Debug Mode!</div>
                 <div className="sub-text">PRIVATE: dont touch if you dont know what you are doing! Debug and calibrate the assistant.</div>
                 <div className="mx-auto select">
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="exampleFormControlSelect1">Motor #</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
+                        <select className="form-control" id="exampleFormControlSelect1">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>

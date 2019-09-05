@@ -34,7 +34,13 @@
 }
 .modes{
     background: linear-gradient(113.24deg, #27DA4E 3.06%, #3FEDED 95.46%), #FFFFFF;
+    border: 0px;
     border-radius:20px;
+}
+.button-group{
+    background: linear-gradient(113.24deg, #27DA4E 3.06%, #3FEDED 95.46%), #FFFFFF;
+    border-radius:20px;
+
 }
 .select{
     width:200px;

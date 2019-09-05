@@ -11,14 +11,14 @@ def send_event(name=None, event=None):
         spi.open(0,1)
         spi.max_speed_hz = 500000
         spi.mode=0
-        print(messageToSend)
+        # print(messageToSend)
         if (len(messageToSend)==1):
             resp = spi.xfer2([messageToSend[0]])
-            print(resp)
+            # print(resp)
         else:
             for messages in messageToSend:
                 resp = spi.xfer2([messages])
-                print(resp)
+                # print(resp)
     
 def schedule_events(df, s):
     if df.empty:

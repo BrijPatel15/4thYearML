@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 import ReactDOM from 'react-dom';
+import {Modal, Button} from "react-bootstrap";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Dropzone from 'react-dropzone'
-class LandingText extends Component {
+class PlayMusicPage extends Component {
     constructor(){
         super();
         this.state = {
             modes: ["Music Mode","Jam Mode","Debug Mode"],
             isPlaying: "Play",
-            nowPlaying: ""
+            nowPlaying: "",
+            showError:false,
+            errorMessage:''
             };
     }
     render(){
+        const handleErrorClose = () => {
+            this.setState({showError:false})
+        }
         return(
             <div className="container content-wrapper">
                 <div className="landing-text">Play Mode!</div>
@@ -23,12 +29,23 @@ class LandingText extends Component {
                             <input className="fileupload" ref={input => this.fileUploadRef =input} type="file" name="file" onChange={(event) => this.onChangeHandler(event)}/>
                             {/* <button onClick={(e) => this.toggleMusic(e)}>{this.state.isPlaying}</button> <span>{this.state.nowPlaying}</span> */}
                             <div className="mx-auto musicplayer">
-                                <div className="btn-group">
-                                    <button type="button" className="btn btn-secondary" onClick={() => this.fileUploadRef.click()}>Upload</button>
-                                    <button type="button" className="btn btn-secondary" onClick={() => this.playMusic()}>Play</button>
-                                    <button type="button" className="btn btn-secondary" onClick={() => this.stopMusic()}>Stop</button>
+                                <div className="btn-group button-group">
+                                    <button type="button" className="btn btn-secondary " onClick={() => this.fileUploadRef.click()}>Upload</button>
+                                    <button type="button" className="btn btn-secondary " onClick={() => this.playMusic()}>Play</button>
+                                    <button type="button" className="btn btn-secondary " onClick={() => this.stopMusic()}>Stop</button>
                                 </div>
                             </div>
+                            <Modal show={this.state.showError}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Error</Modal.Title>
+                            </Modal.Header>
+                                <Modal.Body>{this.state.errorMessage}</Modal.Body>
+                                <Modal.Footer>
+                                <Button className="modes" onClick={handleErrorClose}>
+                                   Ok
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
                        </div>
                    </div>
                   
@@ -43,21 +60,17 @@ class LandingText extends Component {
             if (data.status =="200")
                 this.setState({isPlaying: 'Pause'});
             else
-                console.log(data.message);
-            // this.setState({currMode: data.data});
-            // console.log(this.state.currMode);
+                this.handleErrorShow(data.message);
         });
     }
     stopMusic(){
         fetch('http://127.0.0.1:5000/api/pause', {method: 'get'})
             .then (res => res.json())
             .then ((data)=> {
-                if (data.status =="200")
+                if (data.status_code ===200)
                     this.setState({isPlaying: 'Play', nowPlaying:data.data});
                 else
-                    console.log(data.message);
-                // this.setState({currMode: data.data});
-                // console.log(this.state.currMode);
+                    this.handleErrorShow(data.message);
             });
     }
     onChangeHandler(event){
@@ -75,5 +88,8 @@ class LandingText extends Component {
     upload(){
         this.refs.fileupload.click();
     }
+    handleErrorShow(message){
+        this.setState({showError:true, errorMessage: message})
+    }
 }
-export default LandingText;
+export default PlayMusicPage;
