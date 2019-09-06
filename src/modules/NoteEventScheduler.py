@@ -11,16 +11,24 @@ def send_event(name=None, event=None):
                 spi.open(0,1)
                 spi.max_speed_hz = 500000
                 spi.mode=0
-                resp = spi.xfer2([messageToSend])
-                print(resp)
+                if (len(messageToSend)==1):
+                        resp = spi.xfer2([messageToSend[0]])
+                else:
+                        for messages in messageToSend:
+                                resp = spi.xfer2([messages])
+                                print(resp)
         if event is 'Chord':
                 for val in name:
                         messageToSend = dataFrameToByteConverter(val, event)
                         spi.open(0,1)
                         spi.max_speed_hz = 500000
                         spi.mode=0
-                        resp = spi.xfer2([messageToSend])
-                        print(resp)
+                        if (len(messageToSend)==1):
+                            resp = spi.xfer2([messageToSend[0]])
+                        else:
+                                for messages in messageToSend:
+                                        resp = spi.xfer2([messages])
+                                        print(resp)
     
 def schedule_events(df, s):
     if df.empty:
