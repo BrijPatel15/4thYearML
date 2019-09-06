@@ -13,7 +13,11 @@ class HomePage extends Component {
             currMode: 'DEFAULT'
             
         }
+        this.viewHandler=this.viewHandler.bind(this);
 
+    }
+    viewHandler(currMode){
+        this.setState({currMode:currMode})
     }
     componentDidMount(){
         fetch('http://127.0.0.1:5000/api/mode', {method: 'get'})
@@ -42,10 +46,6 @@ class HomePage extends Component {
                             </ul>
                         </div>
                     </div>
-                    {/* <Route exact path="/" component={LandingText}/>
-                    <Route path="/music" component={PlayMusicPage}/>
-                    <Route path = "/jam"component={LandingText}/>
-                    <Route path = "/debug" component={LandingText}/> */}
                     {this.showModeView()}
                 </div>
             </Router>
@@ -54,7 +54,7 @@ class HomePage extends Component {
 
     showModeView(){
         if (this.state.currMode==='DEFAULT'){
-            return <LandingText/>;
+            return <LandingText viewHandler={this.viewHandler}/>;
         }
         else if (this.state.currMode==='MUSIC'){
             return <PlayMusicPage/>;
@@ -66,7 +66,7 @@ class HomePage extends Component {
         }
     }
     setMode(newmode){
-        console.log(newmode);
+        // console.log(newmode);
         fetch('http://127.0.0.1:5000/api/mode', {method: 'post', header: {'Accept': 'application/json', 'Content-Type': 'application/json'},body: JSON.stringify({ data: newmode})})
         .then (res => res.json())
         .then ((data)=> {

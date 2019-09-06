@@ -15,19 +15,20 @@ class LandingText extends Component {
                         <button className="btn-xlg border-0 btn-secondary dropdown-toggle modes" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Select Mode
                         </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {/* <a className="dropdown-item" href="#">{this.state.modes[0]}</a> */}
-                        <Link to="/music" className="dropdown-item">{this.state.modes[0]}</Link>
-                        {/* <a className="dropdown-item" href="#">{this.state.modes[1]}</a> */}
-                        <Link to="/jam" className="dropdown-item">{this.state.modes[1]}</Link>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+                            <div className="dropdown-item" onClick={(e)=>this.setMode('MUSIC')}>{this.state.modes[0]}</div>
+                            <div className="dropdown-item" onClick={(e)=>this.setMode('JAM')}>{this.state.modes[1]}</div>
                         <div className="dropdown-divider"></div>
-                        {/* <a className="dropdown-item" href="#">{this.state.modes[2]}</a> */}
-                        <Link to="/debug" className="dropdown-item">{this.state.modes[2]}</Link>
+                            <div className="dropdown-item" onClick={(e)=>this.setMode('DEBUG')}>{this.state.modes[2]}</div>
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
+    setMode(newmode){
+        this.props.viewHandler(newmode)
+    }
 }
+
 export default LandingText;
