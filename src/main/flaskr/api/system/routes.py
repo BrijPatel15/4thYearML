@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, send_from_directory
 import psutil
 mod_system = Blueprint('api', __name__)
 
-LOGSPATH="fronttail.log"
+LOGSPATH="static/fronttail.log"
 
 _config = { 'filename':'', 'isPlaying': False , 'file_error':False, 'modes':['AutoPlay Mode','Play Along Mode', 'GenrePlay'], 'logs':""}
 
@@ -14,13 +14,6 @@ def system():
     free_mem = psutil.virtual_memory()._asdict()['free']
     return jsonify({'cpu':cpu_per,'memory_per':percent_mem,'memory_avail':avail_mem,'free_mem':free_mem})
 
-@mod_system.route('/stream',methods = ['GET'])
-def stream():
-    generate()
-    return _config['logs']
-def generate():
-    f = open(LOGSPATH, "r") 
-    temp=f.readlines()
-    _config['logs']=""
-    for lines in temp[(len(temp)-50):len(temp)]:
-        _config['logs']+=lines
+@mod_system.route('/log',methods = ['GET'])
+def fetchLogs():
+        return send_from_directory('static', 'fronttail.log' )

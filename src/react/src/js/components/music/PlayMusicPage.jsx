@@ -57,7 +57,7 @@ class PlayMusicPage extends Component {
         fetch('http://127.0.0.1:5000/api/play', {method: 'get'})
         .then (res => res.json())
         .then ((data)=> {
-            if (data.status =="200")
+            if (data.status_code===200)
                 this.setState({isPlaying: 'Pause'});
             else
                 this.handleErrorShow(data.message);
@@ -67,7 +67,7 @@ class PlayMusicPage extends Component {
         fetch('http://127.0.0.1:5000/api/pause', {method: 'get'})
             .then (res => res.json())
             .then ((data)=> {
-                if (data.status_code ===200)
+                if (data.status_code===200)
                     this.setState({isPlaying: 'Play', nowPlaying:data.data});
                 else
                     this.handleErrorShow(data.message);
