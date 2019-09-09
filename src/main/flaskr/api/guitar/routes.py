@@ -65,6 +65,26 @@ def pause():
     globalProcess.terminate()
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
+
+@mod_guitar.route('/testmotors', methods = ['GET'])
+def runTestMotorScript():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = dir_path+"/../../../../modules/testMotors.py"
+    cmd = "python3.7 "+ dir_path 
+    try:
+        if (globalProcess!=None):
+            status=HTTPStatus.INTERNAL_SERVER_ERROR
+            msg="Currently running a process."
+            raise ApiException(msg, status_code=status)
+        else:
+            globalProcess = subprocess.Popen(cmd, shell=True)
+            print("Process ID: ",globalProcess.pid)
+            subPID=globalProcess.pid
+    except subprocess.CalledProcessError as e:
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
+        msg = e.output
+        raise ApiException(msg, status_code=status)
+    
 @mod_guitar.errorhandler(ApiException)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
