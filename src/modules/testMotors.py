@@ -1,6 +1,5 @@
 import sys, os, sched, time
 from MidiParser import parse_notes, validate_file
-from TestEventScheduler import schedule_events
 import spidev
 dir_path = os.path.dirname(os.path.realpath(__file__))
 # MUSIC_PATH = "../../music/guitar.mid"
