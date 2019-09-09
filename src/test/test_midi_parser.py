@@ -53,12 +53,10 @@ class MidiParserTestCase(unittest.TestCase):
         self.assertEqual(res[0], getByteFromNote("C1")[0])
 
         expected = True
-        actual = eventConverter.validateValues(test3["event"], test3["name"])
-        res = eventConverter.dataFrameToByteConverter(test3['name'], test3['event'])
+        for event in test3["name"]:
+            actual = eventConverter.validateValues(test3["event"], test3["name"])
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
-        self.assertEqual(res[0], getByteFromNote("C1")[0])
-        self.assertEqual(res[1], getByteFromNote("B1")[0])
 
         expected = False
         actual = eventConverter.validateValues(test2["event"], test2["name"])
