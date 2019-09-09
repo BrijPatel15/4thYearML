@@ -110,3 +110,4 @@ node_modules
 src/react/node_modules
 
 src/main/flaskr/static/main.js
+mypythonenv/
