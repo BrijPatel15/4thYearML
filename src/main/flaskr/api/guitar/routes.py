@@ -66,7 +66,7 @@ def pause():
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
 
-@mod_guitar.route('/testmotors', methods = ['GET'])
+@mod_guitar.route('/test', methods = ['GET'])
 def runTestMotorScript():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dir_path = dir_path+"/../../../../modules/testMotors.py"
@@ -84,7 +84,7 @@ def runTestMotorScript():
         status = HTTPStatus.INTERNAL_SERVER_ERROR
         msg = e.output
         raise ApiException(msg, status_code=status)
-    
+
 @mod_guitar.errorhandler(ApiException)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
