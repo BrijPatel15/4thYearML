@@ -23,7 +23,7 @@ def upload_file():
             status= HTTPStatus.INTERNAL_SERVER_ERROR
             msg = "Error occured during upload"
             raise ApiException(msg, status_code=status)
-        return jsonify({'status': status, 'message':msg, 'data': _config['filename']})
+        return jsonify({'status_code': status, 'message':msg, 'data': _config['filename']})
     elif request.method =='GET':
         return (_config['filename'])
 

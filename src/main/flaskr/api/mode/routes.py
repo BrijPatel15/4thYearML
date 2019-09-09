@@ -17,7 +17,7 @@ def mode():
         msg ="Success"
         data =  _config['currMode']
         logger.debug('Set mode to '+ _config['currMode'])
-        return jsonify({'status': status, 'message':msg, 'data': data})
+        return jsonify({'status_code': status, 'message':msg, 'data': data})
     elif request.method =='GET':
         return (_config['currMode'])
 
