@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { LazyLog } from "react-lazylog"
 class DebugPage extends Component {
     constructor(){
         super();
@@ -15,7 +16,7 @@ class DebugPage extends Component {
                 <div className="sub-text">PRIVATE: dont touch if you dont know what you are doing! Debug and calibrate the assistant.</div>
                 <div className="mx-auto select">
                     <div className="form-group">
-                        <label for="exampleFormControlSelect1">Motor #</label>
+                        <label >Motor #</label>
                         <select className="form-control" id="exampleFormControlSelect1">
                         <option>1</option>
                         <option>2</option>
@@ -27,6 +28,7 @@ class DebugPage extends Component {
                         <input placeholder="steps"></input>
                     </div>
                 </div>
+                <LazyLog url={'http://127.0.0.1:5000/api/log'} enableSearch follow={true}></LazyLog>
             </div>
         )
     }
