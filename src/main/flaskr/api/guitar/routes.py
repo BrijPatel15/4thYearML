@@ -72,14 +72,9 @@ def runTestMotorScript():
     dir_path = dir_path+"/../../../../modules/testMotors.py"
     cmd = "python3.7 "+ dir_path 
     try:
-        if (globalProcess!=None):
-            status=HTTPStatus.INTERNAL_SERVER_ERROR
-            msg="Currently running a process."
-            raise ApiException(msg, status_code=status)
-        else:
-            globalProcess = subprocess.Popen(cmd, shell=True)
-            print("Process ID: ",globalProcess.pid)
-            subPID=globalProcess.pid
+        globalProcess = subprocess.Popen(cmd, shell=True)
+        print("Process ID: ",globalProcess.pid)
+        subPID=globalProcess.pid
     except subprocess.CalledProcessError as e:
         status = HTTPStatus.INTERNAL_SERVER_ERROR
         msg = e.output
