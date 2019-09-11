@@ -11,7 +11,8 @@ class PlayMusicPage extends Component {
             isPlaying: "Play",
             nowPlaying: "",
             showError:false,
-            errorMessage:''
+            errorMessage:'',
+            songProcessID: -1000
             };
     }
     render(){
@@ -34,6 +35,7 @@ class PlayMusicPage extends Component {
                                     <button type="button" className="btn btn-secondary " onClick={() => this.playMusic()}>Play</button>
                                     <button type="button" className="btn btn-secondary " onClick={() => this.stopMusic()}>Stop</button>
                                 </div>
+                                {this.showSongPID()}
                             </div>
                             <Modal show={this.state.showError}>
                             <Modal.Header closeButton>
@@ -58,7 +60,7 @@ class PlayMusicPage extends Component {
         .then (res => res.json())
         .then ((data)=> {
             if (data.status_code===200)
-                this.setState({isPlaying: 'Pause'});
+                this.setState({isPlaying: 'Pause', songProcessID: data.data.pid});
             else
                 this.handleErrorShow(data.message);
         });
@@ -90,6 +92,11 @@ class PlayMusicPage extends Component {
     }
     handleErrorShow(message){
         this.setState({showError:true, errorMessage: message})
+    }
+    showSongPID(){
+        if (this.state.songProcessID>0){
+            return(<div>{this.state.songProcessID + 1}</div>)
+        }
     }
 }
 export default PlayMusicPage;

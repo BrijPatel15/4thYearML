@@ -48,9 +48,9 @@ def play():
     else:
         status = HTTPStatus.INTERNAL_SERVER_ERROR
         msg = "Must upload file to play a song."
-        data = ""
+        data = jsonify{'pid': subPID}
         raise ApiException(msg, status_code=status)
-    return jsonify({'status_code': status, 'message':msg, 'payload': data})
+    return jsonify({'status_code': status, 'message':msg, 'data': data})
 
 @mod_guitar.route('/pause', methods = ['GET'])
 def pause():
