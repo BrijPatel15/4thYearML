@@ -1,7 +1,7 @@
 import sys
 import time
-from flask import Flask
-from flask import render_template, url_for, request, redirect, jsonify
+from flask import Flask, render_template, url_for, request, redirect, jsonify
+from flask.logging import default_handler
 import logging
 # from flask.logging import default_handler
 
@@ -16,14 +16,13 @@ _config = { 'filename':'', 'isPlaying': False , 'file_error':False, 'modes':['Au
 
 # TEMPLATES = "templates/" #goes here by default
 def create_app(test_config=None):
-	logger = logging.getLogger(__name__)
-	logging.basicConfig(filename=LOGSPATH, filemode='w', format='[%(name)s] - [%(levelname)s]: %(message)s')
+	# logger = logging.getLogger(__÷name__)
+	# logging.basicConfig(filename=LOGSPATH, filemode='w', format='[%(name)s] - [%(levelname)s]: %(message)s')
 	app = Flask(__name__, instance_relative_config=True)
-	
 	app.register_blueprint(mod)
 	app.register_blueprint(mod_system, url_prefix='/api')
 	app.register_blueprint(mod_mode, url_prefix='/api')
 	app.register_blueprint(mod_guitar, url_prefix='/api')
-	logger.debug('App started')
+	app.logger.info('App started')
 	return app
   

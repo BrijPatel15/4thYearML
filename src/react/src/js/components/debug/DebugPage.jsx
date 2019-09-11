@@ -29,7 +29,7 @@ class DebugPage extends Component {
                         <input placeholder="steps"></input>
                     </div>
                 </div>
-                <LazyLog url={'http://127.0.0.1:5000/api/log'} enableSearch follow={true}></LazyLog>
+                <LazyLog url={'http://127.0.0.1:5000/api/log'} enableSearch follow={true} stream={true}></LazyLog>
             </div>
         )
     }

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, redirect, jsonify
+from flask import Blueprint, render_template, url_for, request, redirect, jsonify, current_app
 from http import HTTPStatus
 import signal, subprocess, os
 from ..exception import ApiException 
