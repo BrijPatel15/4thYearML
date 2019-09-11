@@ -33,7 +33,7 @@ def play():
         _config['isPlaying'] = True
         status = HTTPStatus.OK
         msg = "Success"
-        data = _config['filename']
+        data = jsonify({'pid': subPID})
         dir_path = os.path.dirname(os.path.realpath(__file__))
         dir_path = dir_path+"/../../../../modules/playSong.py"
         cmd = "python3.7 "+ dir_path       
@@ -48,7 +48,7 @@ def play():
     else:
         status = HTTPStatus.INTERNAL_SERVER_ERROR
         msg = "Must upload file to play a song."
-        data = jsonify({'pid': subPID})
+        data = ""
         raise ApiException(msg, status_code=status)
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
