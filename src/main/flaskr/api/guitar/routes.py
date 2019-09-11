@@ -56,7 +56,6 @@ def play():
 @mod_guitar.route('/pause', methods = ['POST'])
 def pause():
     subPID =request.json['pid']
-    print(subPID)
     status = HTTPStatus.OK
     msg = "Success"
     data = _config['filename']
@@ -66,7 +65,7 @@ def pause():
         raise ApiException(msg, status_code=status)
         # return jsonify({'status_code': status, 'message':msg, 'payload': data})
     # globalProcess.terminate()
-    os.kill(subPID, signal.SIGTERM) #or signal.SIGKILL 
+    os.kill(subPID+1, signal.SIGTERM) #or signal.SIGKILL 
     subPID=-1000
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
