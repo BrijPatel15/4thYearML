@@ -60,8 +60,8 @@ class PlayMusicPage extends Component {
         .then (res => res.json())
         .then ((data)=> {
             if (data.status_code===200){
-                this.setState({isPlaying: 'Pause', songProcessID: data.data.pid});
                 console.log(data.data.pid)
+                this.setState({isPlaying: 'Pause', songProcessID: data.data.pid});
             }
             else
                 this.handleErrorShow(data.message);
