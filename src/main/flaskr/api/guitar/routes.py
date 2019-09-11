@@ -50,7 +50,7 @@ def play():
         msg = "Must upload file to play a song."
         data = ""
         raise ApiException(msg, status_code=status)
-    return jsonify(exception={'status_code': status, 'message':msg, 'payload': data})
+    return jsonify(status={'status_code': status, 'message':msg, 'payload': data})
 
 @mod_guitar.route('/pause', methods = ['GET'])
 def pause():
