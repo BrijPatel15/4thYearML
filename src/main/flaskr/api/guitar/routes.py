@@ -56,6 +56,7 @@ def play():
 @mod_guitar.route('/pause', methods = ['GET'])
 def pause():
     args = request.args
+    current_app.logger.info(args)
     status = HTTPStatus.OK
     msg = "Success"
     data = _config['filename']
