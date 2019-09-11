@@ -98,6 +98,8 @@ class PlayMusicPage extends Component {
     showSongPID(){
         if (this.state.songProcessID>0){
             return(<span>{this.state.songProcessID + 1}</span>)
+        }else{
+            return(<span>Not playing</span>)
         }
     }
 }
