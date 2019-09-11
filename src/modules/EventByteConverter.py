@@ -2,14 +2,11 @@ from ByteConstTable import getByteFromNote, noteVals
 
 def dataFrameToByteConverter(name, event):
     finalByteArray = bytearray()
-    colVal = event
-    noteVal = name
-    assert(validateValues(colVal, noteVal)), "Event and Note values are not valid or are empty."
-    if colVal is 'Note':
-        finalByteArray.append(bytes(getByteFromNote(noteVal))[0] & 255)
-    if colVal is 'Chord':
-        for val in noteVal:
-            finalByteArray.append(bytes(getByteFromNote(val))[0] & 127)
+    assert(validateValues(event, name)), "Event and Note values are not valid or are empty."
+    if event is 'Note':
+        finalByteArray.append(bytes(getByteFromNote(name))[0] & 255)
+    if event is 'Chord':
+        finalByteArray.append(bytes(getByteFromNote(name))[0] & 127)
     return finalByteArray
 
 def validateValues(eventVal, noteVal):
