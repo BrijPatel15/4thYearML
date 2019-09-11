@@ -53,7 +53,7 @@ def play():
         raise ApiException(msg, status_code=status)
     return jsonify({'status_code': status, 'message':msg, 'data': {'pid': subPID}})
 
-@mod_guitar.route('/pause', methods = ['GET'])
+@mod_guitar.route('/pause', methods = ['POST'])
 def pause():
     args = request.args
     current_app.logger.info(args)

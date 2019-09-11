@@ -74,7 +74,7 @@ class PlayMusicPage extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          method: 'GET',
+          method: 'POST',
           body: JSON.stringify({pid: this.state.songProcessID})
         })
             .then (res => res.json())
