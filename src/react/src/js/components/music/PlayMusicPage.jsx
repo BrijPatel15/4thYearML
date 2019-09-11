@@ -59,8 +59,10 @@ class PlayMusicPage extends Component {
         fetch('http://127.0.0.1:5000/api/play', {method: 'get'})
         .then (res => res.json())
         .then ((data)=> {
-            if (data.status_code===200)
+            if (data.status_code===200){
                 this.setState({isPlaying: 'Pause', songProcessID: data.data.pid});
+                console.log(data.data.pid)
+            }
             else
                 this.handleErrorShow(data.message);
         });
@@ -70,7 +72,7 @@ class PlayMusicPage extends Component {
             .then (res => res.json())
             .then ((data)=> {
                 if (data.status_code ===200)
-                    this.setState({isPlaying: 'Play', nowPlaying:data.data});
+                    this.setState({isPlaying: 'Play', nowPlaying:data.data,songProcessID:-1000});
                 else
                     this.handleErrorShow(data.message);
             });
@@ -95,7 +97,7 @@ class PlayMusicPage extends Component {
     }
     showSongPID(){
         if (this.state.songProcessID>0){
-            return(<div>{this.state.songProcessID + 1}</div>)
+            return(<span>{this.state.songProcessID + 1}</span>)
         }
     }
 }
