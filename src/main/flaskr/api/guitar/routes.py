@@ -57,12 +57,13 @@ def pause():
     status = HTTPStatus.OK
     msg = "Success"
     data = _config['filename']
-    if (globalProcess==None):
+    if (globalProcess==None or subPID<=0):
         status=HTTPStatus.INTERNAL_SERVER_ERROR
         msg="Song is not playing."
         raise ApiException(msg, status_code=status)
         # return jsonify({'status_code': status, 'message':msg, 'payload': data})
     globalProcess.terminate()
+    subPID=-1000
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
 
