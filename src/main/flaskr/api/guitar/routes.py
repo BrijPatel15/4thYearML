@@ -55,7 +55,7 @@ def play():
 
 @mod_guitar.route('/pause', methods = ['POST'])
 def pause():
-    subPID =request.json.pid
+    subPID =request.json['pid']
     print(subPID)
     status = HTTPStatus.OK
     msg = "Success"
