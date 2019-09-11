@@ -68,7 +68,7 @@ class PlayMusicPage extends Component {
         });
     }
     stopMusic(){
-        fetch('http://127.0.0.1:5000/api/pause', {method: 'get',body: JSON.stringify({pid: this.state.songProcessID})
+        fetch('http://127.0.0.1:5000/api/pause', {method: 'get',body: JSON.stringify({pid: this.state.songProcessID})})
             .then (res => res.json())
             .then ((data)=> {
                 if (data.status_code ===200)
