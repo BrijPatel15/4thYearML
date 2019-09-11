@@ -55,15 +55,17 @@ def play():
 
 @mod_guitar.route('/pause', methods = ['GET'])
 def pause():
+    args = request.args
     status = HTTPStatus.OK
     msg = "Success"
     data = _config['filename']
-    if (globalProcess==None or subPID<=0):
+    if (args['pid']<=0):
         status=HTTPStatus.INTERNAL_SERVER_ERROR
         msg="Song is not playing."
         raise ApiException(msg, status_code=status)
         # return jsonify({'status_code': status, 'message':msg, 'payload': data})
-    globalProcess.terminate()
+    # globalProcess.terminate()
+    os.kill(args['pid'], signal.SIGTERM) #or signal.SIGKILL 
     subPID=-1000
     return jsonify({'status_code': status, 'message':msg, 'data': data})
 
