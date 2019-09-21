@@ -13,11 +13,14 @@ def validateValues(eventVal, noteVal):
     isValid = False
     notFound = False
     acceptedEventVals = ["Note", "Chord"]
-    if (eventVal and noteVal and eventVal in str(acceptedEventVals)):
+    if (eventVal in str(acceptedEventVals)):
         if (eventVal is 'Chord'):
             for val in noteVal:
                 if val not in noteVals:
                     notFound = True
+        else:
+            if noteVal not in noteVals:
+                notFound = True
         if not notFound:
             isValid = True
     return isValid
