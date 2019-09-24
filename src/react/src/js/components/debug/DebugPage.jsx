@@ -16,6 +16,7 @@ class DebugPage extends Component {
                 <div className="sub-text">PRIVATE: dont touch if you dont know what you are doing! Debug and calibrate the assistant.</div>
                 <div className="mx-auto select">
                     <div className="form-group">
+                        <button onClick={(e)=> this.startTest()}>Test</button>
                         <label >Motor #</label>
                         <select className="form-control" id="exampleFormControlSelect1">
                         <option>1</option>
@@ -28,9 +29,20 @@ class DebugPage extends Component {
                         <input placeholder="steps"></input>
                     </div>
                 </div>
-                <LazyLog url={'http://127.0.0.1:5000/api/log'} enableSearch follow={true}></LazyLog>
+                <LazyLog url={'http://127.0.0.1:5000/api/log'} enableSearch follow={true} stream={true}></LazyLog>
             </div>
         )
+    }
+    startTest(){
+        fetch('http://127.0.0.1:5000/api/test', {method: 'get'})
+            .then (res => res.json())
+            .then ((data)=> {
+                if (data.status_code===200)
+                    // this.setState();
+                    this.handleErrorShow('Tests are running!');
+                else
+                    this.handleErrorShow(data.message);
+            });
     }
 }
 export default DebugPage;

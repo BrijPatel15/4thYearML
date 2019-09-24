@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, send_from_directory
+from flask import Blueprint, jsonify, send_from_directory, current_app
 import psutil
 mod_system = Blueprint('api', __name__)
 

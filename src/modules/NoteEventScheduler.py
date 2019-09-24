@@ -36,5 +36,5 @@ def schedule_events(df, s):
         times =row['timeOffset']
         name = row['name']
         event = row['event']
-        s.enter(3+times, 1, send_event, argument=(name,event,iterator)))
-	iterator = iterator + 1
+        s.enter(3+times, 1, send_event, argument=(name,event,iterator))
+        iterator = iterator + 1

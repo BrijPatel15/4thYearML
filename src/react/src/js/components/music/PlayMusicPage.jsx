@@ -11,7 +11,8 @@ class PlayMusicPage extends Component {
             isPlaying: "Play",
             nowPlaying: "",
             showError:false,
-            errorMessage:''
+            errorMessage:'',
+            songProcessID: -1000
             };
     }
     render(){
@@ -34,6 +35,7 @@ class PlayMusicPage extends Component {
                                     <button type="button" className="btn btn-secondary " onClick={() => this.playMusic()}>Play</button>
                                     <button type="button" className="btn btn-secondary " onClick={() => this.stopMusic()}>Stop</button>
                                 </div>
+                                {this.showSongPID()}
                             </div>
                             <Modal show={this.state.showError}>
                             <Modal.Header closeButton>
@@ -57,18 +59,28 @@ class PlayMusicPage extends Component {
         fetch('http://127.0.0.1:5000/api/play', {method: 'get'})
         .then (res => res.json())
         .then ((data)=> {
-            if (data.status_code===200)
-                this.setState({isPlaying: 'Pause'});
+            if (data.status_code===200){
+                console.log(data.data.pid)
+                this.setState({isPlaying: 'Pause', songProcessID: data.data.pid});
+            }
             else
                 this.handleErrorShow(data.message);
         });
     }
     stopMusic(){
-        fetch('http://127.0.0.1:5000/api/pause', {method: 'get'})
+        fetch('http://127.0.0.1:5000/api/pause', 
+        {
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({pid: this.state.songProcessID})
+        })
             .then (res => res.json())
             .then ((data)=> {
                 if (data.status_code ===200)
-                    this.setState({isPlaying: 'Play', nowPlaying:data.data});
+                    this.setState({isPlaying: 'Play', nowPlaying:data.data,songProcessID:-1000});
                 else
                     this.handleErrorShow(data.message);
             });
@@ -90,6 +102,13 @@ class PlayMusicPage extends Component {
     }
     handleErrorShow(message){
         this.setState({showError:true, errorMessage: message})
+    }
+    showSongPID(){
+        if (this.state.songProcessID>0){
+            return(<span>{this.state.songProcessID + 1}</span>)
+        }else{
+            return(<span>Not playing</span>)
+        }
     }
 }
 export default PlayMusicPage;
