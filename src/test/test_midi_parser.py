@@ -54,7 +54,7 @@ class MidiParserTestCase(unittest.TestCase):
 
         expected = True
         for event in test3["name"]:
-            actual = eventConverter.validateValues(test3["event"], test3["name"])
+            actual = eventConverter.validateValues(test3["event"], event)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
@@ -64,7 +64,8 @@ class MidiParserTestCase(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = eventConverter.validateValues(test4["event"], test4["name"])
+        for event in test4["name"]:
+            actual = eventConverter.validateValues(test4["event"], event)
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
         
