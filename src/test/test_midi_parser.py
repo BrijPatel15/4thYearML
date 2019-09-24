@@ -27,14 +27,21 @@ class MidiParserTestCase(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = midi.validate_file(BAD_MIDI_PATH_1)
-        print(BAD_MIDI_PATH_1)
+        try:
+            actual = midi.validate_file(BAD_MIDI_PATH_1)
+        except:
+            print(BAD_MIDI_PATH_1)
+            actual = False
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
+        
 
         expected = False
-        actual = midi.validate_file(BAD_MIDI_PATH_2)
-        print(BAD_MIDI_PATH_2)
+        try:
+            actual = midi.validate_file(BAD_MIDI_PATH_2)
+        except:
+            print(BAD_MIDI_PATH_2)
+            actual = False
         print("Expected: "+ str(expected) + " ==> Actual: "+str(actual))
         self.assertEqual(expected, actual)
 
