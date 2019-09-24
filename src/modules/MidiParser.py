@@ -39,6 +39,7 @@ def validate_file(fileName):
     print(path)
     acoustGuitar = instrument.AcousticGuitar
     elecGuitar = instrument.ElectricGuitar
+    guitar = instrument.Guitar
     bpmFound = False
     instrFound = False
     try:
@@ -48,7 +49,8 @@ def validate_file(fileName):
             midiFile.notesAndRests is not None and midiFile.parts is not None and
             midiFile.pitches is not None and midiFile.secondsMap is not None and midiFile._elements is not None):
             for part in midiFile._elements:
-                if (isinstance(part.getInstrument(), acoustGuitar) or isinstance(part.getInstrument(), elecGuitar)):
+                if (isinstance(part.getInstrument(), acoustGuitar) or isinstance(part.getInstrument(), elecGuitar)
+                    or isinstance(part.getInstrument(), guitar)):
                     instrFound = True
             bpm = get_tempo(path)
             if bpm is not None:
