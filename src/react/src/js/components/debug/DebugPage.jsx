@@ -165,6 +165,7 @@ class DebugPage extends Component {
                 <div id="noteList">
 
                 </div>
+                <button onClick={() => this.sendNotes()}>Send notes</button>
 
             </div>
         )
@@ -174,6 +175,30 @@ class DebugPage extends Component {
         return this.state.notesToSend.map(note => (
             <li>{note.note}</li>
         ));
+    }
+
+    sendNotes(){
+        var notes = []
+        this.state.notesToSend.forEach(function (item){
+            if(item.note !== ""){
+                notes.push(item.note)
+            }
+        });
+    
+        fetch('http://127.0.0.1:5000/api/debug', 
+        {
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({notes: notes})
+        })
+            .then (res => res.json())
+            .then ((data)=> {
+                if (data.status_code !==200)
+                    this.handleErrorShow(data.message);
+            });
     }
 
     addNote(note, stringId){

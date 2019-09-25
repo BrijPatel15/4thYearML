@@ -27,6 +27,29 @@ def upload_file():
     elif request.method =='GET':
         return (_config['filename'])
 
+@mod_guitar.route('/debug', methods = ['POST'])
+def play_notes():
+    if request.method == 'POST':
+        f = request.json['notes']
+        print("got notes: ", f)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        dir_path = dir_path+"/../../../../modules/testMotors.py "
+        for item in f:
+            dir_path = dir_path + item + " "
+        cmd = "python3.7 "+ dir_path
+        try:
+            globalProcess = subprocess.Popen(cmd, shell=True)
+            print("Process ID: ",globalProcess.pid)
+            subPID=globalProcess.pid
+            status = HTTPStatus.OK
+        except subprocess.CalledProcessError as e:
+            status = HTTPStatus.INTERNAL_SERVER_ERROR
+            msg = e.output
+            raise ApiException(msg, status_code=status)
+        return jsonify({'status_code': status, 'message':msg, 'data': _config['filename']})
+    elif request.method =='GET':
+        return (_config['filename'])
+
 @mod_guitar.route('/play', methods = ['GET'])
 def play():
     if (_config['filename'] != None):
