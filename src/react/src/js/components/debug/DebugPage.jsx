@@ -182,6 +182,7 @@ class DebugPage extends Component {
         this.state.notesToSend.forEach(function (item){
             if(item.note !== ""){
                 notes.push(item.note)
+                item.note = ""
             }
         });
     

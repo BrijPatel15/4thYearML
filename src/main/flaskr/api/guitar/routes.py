@@ -42,6 +42,7 @@ def play_notes():
             print("Process ID: ",globalProcess.pid)
             subPID=globalProcess.pid
             status = HTTPStatus.OK
+            msg = "Success"
         except subprocess.CalledProcessError as e:
             status = HTTPStatus.INTERNAL_SERVER_ERROR
             msg = e.output
