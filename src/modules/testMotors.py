@@ -13,4 +13,4 @@ for i in range(100):
     spi.mode=0
     resp = spi.xfer2([byteArr[0]])
     print(i)
-    time.sleep(0.5)
+    time.sleep(5)
