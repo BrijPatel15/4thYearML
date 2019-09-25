@@ -3,8 +3,9 @@ import sys
 import logging
 from music21 import converter, instrument, tempo
 import pandas as pd
+from flask import current_app 
 
-logger = logging.getLogger('flask.app')
+# logger = logging.getLogger('flask.app')
 # Need a standard in terms of representing the events as a structure.
 # It will be a list of dict. List of events (events being, a note, rest, or a chord)
 # So parse_midi_events will return the following
@@ -39,6 +40,8 @@ def validate_file(fileName):
     acoustGuitar = instrument.AcousticGuitar
     elecGuitar = instrument.ElectricGuitar
     guitar = instrument.Guitar
+    bpmFound = False
+    instrFound = False
     try:
         midiFile = converter.parse(path)
         if (midiFile.duration is not None and midiFile.elements is not None and
@@ -48,13 +51,15 @@ def validate_file(fileName):
             for part in midiFile._elements:
                 if (isinstance(part.getInstrument(), acoustGuitar) or isinstance(part.getInstrument(), elecGuitar)
                     or isinstance(part.getInstrument(), guitar)):
-                    return True #We have all of our fields and we have an instrument that we want 
-            return False # We have our fields but we don't have the instrument we want 
+                    instrFound = True
+            bpm = get_tempo(path)
+            if bpm is not None:
+                bpmFound = True
     except:
-       return False #Error parsing
-
-       
-    return False #We don't have the fields we want 
+        current_app.logger.error('Error parsing mid file while validation')
+        return False #Error parsing
+   
+    return bpmFound & instrFound
 
 def get_tempo(path):
     midiFile = converter.parse(path)

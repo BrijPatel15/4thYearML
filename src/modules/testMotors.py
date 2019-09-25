@@ -30,7 +30,7 @@ else:
             spi.mode=0
             resp = spi.xfer2([messageToSend[0]])
     else:
-        messageToSend = dataFrameToByteConverter("Note", notes[0])
+        messageToSend = dataFrameToByteConverter(notes[0], "Note")
         print(messageToSend)
         spi.open(0,1)
         spi.max_speed_hz = 8000000
