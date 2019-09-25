@@ -19,9 +19,9 @@ if len(sys.argv) == 1:
         time.sleep(0.5)
 else:
     notes = sys.argv[1:]
+    spi = spidev.SpiDev()
     print("notes To send DEBUG:", notes)
     if len(notes) > 1: #Chord
-        spi = spidev.SpiDev()
         for n in notes:
             messageToSend = dataFrameToByteConverter(n, "Chord")
             print(messageToSend)
