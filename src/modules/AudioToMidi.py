@@ -1,5 +1,3 @@
-CREATED: 11/9/15 3:57 PM by Justin Salamon <justin.salamon@nyu.edu>
-
 import soundfile
 import resampy
 import vamp
@@ -9,7 +7,9 @@ import numpy as np
 from midiutil.MidiFile import MIDIFile
 from scipy.signal import medfilt
 import jams
-import __init__
+import pyaudio
+import wave
+import os
 
 '''
 Extract the melody from an audio file and convert it to MIDI.
@@ -148,54 +148,75 @@ def hz2midi(hz):
 def audio_to_midi_melodia(infile, outfile, bpm, smooth=0.25, minduration=0.1,
                          savejams=False):
 
+   #The following code comes from markjay4k as referenced below
+	form_1 = pyaudio.paInt16
+	chans=1
+	samp_rate = 44100
+	chunk = 4096
+	record_secs = 10    #record time
+	dev_index = 0
+	# wav_output_filename = 'test1.wav'
+	data =np.array([])
+
+	audio = pyaudio.PyAudio()
+
+	#setup audio input stream
+	stream=audio.open(format = form_1,rate=samp_rate,channels=chans, input_device_index = dev_index, input=True, frames_per_buffer=chunk)
+   
+   
    # define analysis parameters
-   fs = 44100
-   hop = 128
+	fs = 44100
+	hop = 128
 
    # load audio using librosa
-   print("Loading audio...")
-   data, sr = soundfile.read(infile)
-   # mixdown to mono if needed
-   if len(data.shape) > 1 and data.shape[1] > 1:
-       data = data.mean(axis=1)
-   # resample to 44100 if needed
-   if sr != fs:
-       data = resampy.resample(data, sr, fs)
-       sr = fs
+	print("Loading audio...")
+	# data, sr = soundfile.read(infile)
+	for ii in range(0,int((samp_rate/chunk)*record_secs)):
+		sr = samp_rate
+		data1=stream.read(chunk,exception_on_overflow = False)
+		np.append(data,data1)
 
-   # extract melody using melodia vamp plugin
-   print("Extracting melody f0 with MELODIA...")
-   melody = vamp.collect(data, sr, "mtg-melodia:melodia",
-                         parameters={"voicing": 0.2})
+	# mixdown to mono if needed
+	if len(data.shape) > 1 and data.shape[1] > 1:
+			data = data.mean(axis=1)
+	# resample to 44100 if needed
+	if sr != fs:
+			data = resampy.resample(data, sr, fs)
+			sr = fs
 
-   # hop = melody['vector'][0]
-   pitch = melody['vector'][1]
+	# extract melody using melodia vamp plugin
+	print("Extracting melody f0 with MELODIA...")
+	melody = vamp.collect(data, sr, "mtg-melodia:melodia",
+									parameters={"voicing": 0.2})
 
-   # impute missing 0's to compensate for starting timestamp
-   pitch = np.insert(pitch, 0, [0]*8)
+	# hop = melody['vector'][0]
+	pitch = melody['vector'][1]
 
-   # debug
-   # np.asarray(pitch).dump('f0.npy')
-   # print(len(pitch))
+	# impute missing 0's to compensate for starting timestamp
+	pitch = np.insert(pitch, 0, [0]*8)
 
-   # convert f0 to midi notes
-   print("Converting Hz to MIDI notes...")
-   midi_pitch = hz2midi(pitch)
+	# debug
+	# np.asarray(pitch).dump('f0.npy')
+	# print(len(pitch))
 
-   # segment sequence into individual midi notes
-   notes = midi_to_notes(midi_pitch, fs, hop, smooth, minduration)
+	# convert f0 to midi notes
+	print("Converting Hz to MIDI notes...")
+	midi_pitch = hz2midi(pitch)
 
-   # save note sequence to a midi file
-   print("Saving MIDI to disk...")
-   save_midi(outfile, notes, bpm)
+	# segment sequence into individual midi notes
+	notes = midi_to_notes(midi_pitch, fs, hop, smooth, minduration)
 
-   if savejams:
-       print("Saving JAMS to disk...")
-       jamsfile = os.path.splitext(outfile)[0] + ".jams"
-       track_duration = len(data) / float(fs)
-       save_jams(jamsfile, notes, track_duration, os.path.basename(infile))
+	# save note sequence to a midi file
+	print("Saving MIDI to disk...")
+	save_midi(outfile, notes, bpm)
 
-   print("Conversion complete.")
+	if savejams:
+			print("Saving JAMS to disk...")
+			jamsfile = os.path.splitext(outfile)[0] + ".jams"
+			track_duration = len(data) / float(fs)
+			save_jams(jamsfile, notes, track_duration, os.path.basename(infile))
+
+	print("Conversion complete.")
 
 
 if __name__ == "__main__":
