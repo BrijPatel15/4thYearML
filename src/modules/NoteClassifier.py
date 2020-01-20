@@ -1,3 +1,7 @@
+import pyaudio
+import wave
+import os
+
 def matching_freq(freq):
     note=""
     if(freq>15 and freq<17.32):
@@ -192,21 +196,59 @@ def matching_freq(freq):
 
 
 def note_detect(audio_file):
-    Detected_Note = []
-    length = audio_file.getnframes()
-    sound  = np.zeros(length)
 
-    for i in range(length):
-        data = audio_file.readframes(1)
-        data = struct.unpack("<h", data)
-        sound[i] = int(data[0])
+    #The following code comes from markjay4k as referenced below
+    form_1 = pyaudio.paInt16
+    chans=1
+    samp_rate = 16000
+    chunk = 4096
+    record_secs = 1     #record time
+    dev_index = 2
+    wav_output_filename = 'test1.wav'
 
-    sound = np.divide(sound, float(2**15))
-    window = sound * np.blackmanharris(len(sound))
-    f = np.fft.fft(window)
-    i_max = np.argmax(abs(f))
-    print(i_max)
-    freq = (i_max * fs)/len(sound)
-    print(freq)
-    Detected_Note = matching_freq(freq)
-    return Detected_Note`
+
+    audio = pyaudio.PyAudio()
+
+    #setup audio input stream
+    stream=audio.open(format = form_1,rate=samp_rate,channels=chans, input_device_index = dev_index, input=True, frames_per_buffer=chunk)
+
+    print("recording")
+    frames=[]
+
+    for ii in range(0,int((samp_rate/chunk)*record_secs)):
+        data=stream.read(chunk,exception_on_overflow = False)
+        frames.append(data)
+
+        data = np.divide(data, float(2**15))
+        window = data * np.blackmanharris(len(sound))
+        f = np.fft.fft(window)
+        i_max = np.argmax(abs(f))
+        print(i_max)
+        freq = (i_max * fs)/len(sound)
+        print(freq)
+        Detected_Note = matching_freq(freq)
+        print(Detected_Note)
+
+
+    print("finished recording")
+
+note_detect("")
+    #
+    # Detected_Note = []
+    # length = audio_file.getnframes()
+    # sound  = np.zeros(length)
+    #
+    # for i in range(length):
+    #     data = audio_file.readframes(1)
+    #     data = struct.unpack("<h", data)
+    #     sound[i] = int(data[0])
+    #
+    # sound = np.divide(sound, float(2**15))
+    # window = sound * np.blackmanharris(len(sound))
+    # f = np.fft.fft(window)
+    # i_max = np.argmax(abs(f))
+    # print(i_max)
+    # freq = (i_max * fs)/len(sound)
+    # print(freq)
+    # Detected_Note = matching_freq(freq)
+    # return Detected_Note`
