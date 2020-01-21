@@ -1,7 +1,8 @@
 import pyaudio
 import wave
 import os
-
+import numpy as np
+import struct
 def matching_freq(freq):
     note=""
     if(freq>15 and freq<17.32):
@@ -202,8 +203,8 @@ def note_detect(audio_file):
     chans=1
     samp_rate = 16000
     chunk = 4096
-    record_secs = 1     #record time
-    dev_index = 2
+    record_secs = 5     #record time
+    dev_index = 8
     wav_output_filename = 'test1.wav'
 
 
@@ -216,18 +217,25 @@ def note_detect(audio_file):
     frames=[]
 
     for ii in range(0,int((samp_rate/chunk)*record_secs)):
+        frames = []
         data=stream.read(chunk,exception_on_overflow = False)
-        frames.append(data)
-
-        data = np.divide(data, float(2**15))
-        window = data * np.blackmanharris(len(sound))
-        f = np.fft.fft(window)
+        #sound = np.zeros(len(data))
+        sound = [x for x in data]
+        #for i in range(len(data)):
+            #tempdata = data[i]
+            #sound[i] = int(tempdata        
+        print(data, len(data))
+        print(np.sum(sound))
+        sound = np.divide(sound, float(2**15))
+        window = sound * np.blackman(len(sound))
+        f = np.fft.rfft(window)
+        print (f)
         i_max = np.argmax(abs(f))
-        print(i_max)
-        freq = (i_max * fs)/len(sound)
-        print(freq)
+        print("IMax: ",i_max)
+        freq = (i_max * samp_rate)/len(sound)
+        print( freq)
         Detected_Note = matching_freq(freq)
-        print(Detected_Note)
+        print("Note ", Detected_Note)
 
 
     print("finished recording")
