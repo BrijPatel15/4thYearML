@@ -3,6 +3,10 @@ import wave
 import os
 import numpy as np
 import struct
+import signal, subprocess, os
+from http import HTTPStatus
+import matplotlib.pyplot as plt
+
 def matching_freq(freq):
     note=""
     if(freq>15 and freq<17.32):
@@ -195,68 +199,60 @@ def matching_freq(freq):
         note="B8"
         return note
 
+def detectNotes(chunk, samplerate, recordingSec, mode="replicate"):
+    record_secs = recordingSec
+    np.set_printoptions(suppress=True)
 
-def note_detect(audio_file):
+    CHUNK = chunk # number of data points to read at a time
+    RATE = samplerate # time resolution of the recording device (Hz)
 
-    #The following code comes from markjay4k as referenced below
-    form_1 = pyaudio.paInt16
-    chans=1
-    samp_rate = 16000
-    chunk = 4096
-    record_secs = 5     #record time
-    dev_index = 8
-    wav_output_filename = 'test1.wav'
+    p=pyaudio.PyAudio() # start the PyAudio class
+    stream=p.open(format=pyaudio.paInt16,channels=1,rate=RATE,input=True,
+                frames_per_buffer=CHUNK) #uses default input device
+    subset_size = RATE//CHUNK
+    subset = np.zeros(shape=(subset_size))
+
+    for i in range(0,int((RATE/CHUNK)*record_secs)):
+        data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
+        data = data * np.hanning(len(data)) 
+        fft = abs(np.fft.fft(data).real)
+        fft = fft[:int(len(fft)/2)] # keep only first half
+        freq = np.fft.fftfreq(CHUNK,1.0/RATE)
+        freq = freq[:int(len(freq)/2)] # keep only first half
+        
+        freqPeak = freq[np.where(fft==np.max(fft))[0][0]]+1
+        
+        print("peak frequency: %d Hz"%freqPeak)
+        print("Note: %s"%matching_freq(freqPeak))
+        subset = np.append(subset, freqPeak)
+        if (i% subset_size==0):
+            maxFreq = np.amax(subset)
+            print("Peak Note: %s" % matching_freq(maxFreq))
+            subset = np.array(object=[])
+
+            if (mode == "replicate"):
+                dir_path = os.path.dirname(os.path.realpath(__file__))
+                dir_path = dir_path+"/../../../../modules/testMotors.py "
+                dir_path = dir_path + matching_freq(maxFreq) + " "
+                cmd = "python3.7 "+ dir_path
+                try:
+                    globalProcess = subprocess.Popen(cmd, shell=True)
+                    print("Process ID: ",globalProcess.pid)
+                    subPID=globalProcess.pid
+                except subprocess.CalledProcessError as e:
+                    status = HTTPStatus.INTERNAL_SERVER_ERROR
+                    msg = e.output
+            else:
+                return
 
 
-    audio = pyaudio.PyAudio()
+        # plt.plot(freq,fft)
+        # plt.axis([0,4000,None,None])
+        # plt.show()
+        # plt.close()
 
-    #setup audio input stream
-    stream=audio.open(format = form_1,rate=samp_rate,channels=chans, input_device_index = dev_index, input=True, frames_per_buffer=chunk)
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
-    print("recording")
-    frames=[]
-
-    for ii in range(0,int((samp_rate/chunk)*record_secs)):
-        frames = []
-        data=stream.read(chunk,exception_on_overflow = False)
-        #sound = np.zeros(len(data))
-        sound = [x for x in data]
-        #for i in range(len(data)):
-            #tempdata = data[i]
-            #sound[i] = int(tempdata        
-        print(data, len(data))
-        print(np.sum(sound))
-        sound = np.divide(sound, float(2**15))
-        window = sound * np.blackman(len(sound))
-        f = np.fft.rfft(window)
-        print (f)
-        i_max = np.argmax(abs(f))
-        print("IMax: ",i_max)
-        freq = (i_max * samp_rate)/len(sound)
-        print( freq)
-        Detected_Note = matching_freq(freq)
-        print("Note ", Detected_Note)
-
-
-    print("finished recording")
-
-note_detect("")
-    #
-    # Detected_Note = []
-    # length = audio_file.getnframes()
-    # sound  = np.zeros(length)
-    #
-    # for i in range(length):
-    #     data = audio_file.readframes(1)
-    #     data = struct.unpack("<h", data)
-    #     sound[i] = int(data[0])
-    #
-    # sound = np.divide(sound, float(2**15))
-    # window = sound * np.blackmanharris(len(sound))
-    # f = np.fft.fft(window)
-    # i_max = np.argmax(abs(f))
-    # print(i_max)
-    # freq = (i_max * fs)/len(sound)
-    # print(freq)
-    # Detected_Note = matching_freq(freq)
-    # return Detected_Note`
+detectNotes(1024,5512,10)
